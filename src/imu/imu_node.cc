@@ -1,20 +1,32 @@
 #include <iostream>
-#include <string>
+#include <memory>
+#include <vector>
 
+#include "imu.h"
 #include "serial/serial.h"
 
-void enumerate_ports() {
-  std::vector<serial::PortInfo> devices_found = serial::list_ports();
-  for (auto device : devices_found) {
-    std::cout << "device port: " << device.port.c_str()
-              << ", device description: " << device.description.c_str()
-              << ", device hardware id: " << device.hardware_id.c_str()
-              << std::endl;
-  }
+void print_usage() {
+  std::cerr << "Usage: imu_node <serial port address> <baudrate>}."
+            << std::endl;
 }
 
-void print_usage() {
-  std::cerr << "Usage: imu_node <serial port address> <baudrate>}." << std::endl;
+void parseInfo(const std::shared_ptr<serial::Serial> &serial) {
+  uint8_t header0;
+  serial->read(&header0, 1);
+  if (header0 == CommunicationProtocol::flag) {
+    uint8_t header1;
+    serial->read(&header1, 1);
+    if (header1 == CommunicationProtocol::angle) {
+      std::vector<uint8_t> buffer;
+      buffer.reserve(9);
+      serial->read(buffer, 9);
+      double roll = ((buffer[1] << 8) | buffer[0]) / 32768.0 * 180.0;
+      double pitch = ((buffer[3] << 8) | buffer[2]) / 32768.0 * 180.0;
+      double yaw = ((buffer[5] << 8) | buffer[4]) / 32768.0 * 180.0;
+      std::cout << "Roll: " << roll << ", Pitch: " << pitch << ", Yaw: " << yaw
+                << std::endl;
+    }
+  }
 }
 
 int run(int argc, char **argv) {
@@ -26,15 +38,14 @@ int run(int argc, char **argv) {
   std::string port(argv[1]);
   unsigned long baudrate = std::stoul(argv[2]);
   // timeout in milliseconds
-  serial::Serial serial(port, baudrate, serial::Timeout::simpleTimeout(1000));
+  auto serial(std::make_shared<serial::Serial>(
+      port, baudrate, serial::Timeout::simpleTimeout(1000)));
 
-  if (serial.isOpen())
+  if (serial->isOpen())
     std::cout << "Serial port open successfully." << std::endl;
 
   while (1) {
-    uint8_t result;
-    serial.read(&result, 1);
-    std::cout << std::hex << static_cast<int>(result) << " ";
+    parseInfo(serial);
   }
 
   return 0;
