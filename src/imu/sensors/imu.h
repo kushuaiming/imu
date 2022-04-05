@@ -10,14 +10,17 @@ enum CommunicationProtocol {
   quaternion = 0x59
 };
 
-class Angle {
- private:
-  int roll_;
-  int pitch_;
-  int yaw_;
+struct Angle {
+  double roll_;
+  double pitch_;
+  double yaw_;
 };
 
 class IMU {
+ public:
+  const Angle& getAngle() { return angle_; }
+  Angle* mutableAngle() { return &angle_; }
+
  private:
   Angle angle_;
 };

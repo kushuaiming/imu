@@ -22,5 +22,5 @@ catkin_make
 source devel/setup.bash
 ls /dev/ttyUSB*
 sudo chown :second_user /dev/ttyUSB0
-rosrun imu imu_node /dev/ttyUSB0 921600
+rosrun imu imu_node
 ```
