@@ -20,7 +20,10 @@ catkin_make
 ## 2.2 Run
 ```C++
 source devel/setup.bash
-ls /dev/ttyUSB*
 sudo chown :second_user /dev/ttyUSB0
 rosrun imu imu_node
+```
+You can check device id by this command:
+```C++
+ls /dev/ttyUSB*
 ```
