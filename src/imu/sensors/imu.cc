@@ -14,7 +14,7 @@ enum CommunicationProtocol {
 };
 }  // namespace
 
-void IMU::parseInfo(serial::Serial& serial) {
+void IMU::ParseInfo(serial::Serial& serial) {
   uint8_t header0;
   serial.read(&header0, 1);
   if (header0 == CommunicationProtocol::flag) {
