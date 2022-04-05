@@ -1,14 +1,7 @@
 #ifndef SENSORS_IMU_H_
 #define SENSORS_IMU_H_
 
-enum CommunicationProtocol {
-  flag = 0x55,
-  acceleration = 0x51,
-  angular_velocity = 0x52,
-  angle = 0x53,
-  magnetic_field = 0x54,
-  quaternion = 0x59
-};
+#include "serial/serial.h"
 
 struct Angle {
   double roll_;
@@ -18,8 +11,7 @@ struct Angle {
 
 class IMU {
  public:
-  const Angle& getAngle() { return angle_; }
-  Angle* mutableAngle() { return &angle_; }
+  void parseInfo(serial::Serial& serial);
 
  private:
   Angle angle_;
