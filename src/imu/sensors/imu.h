@@ -1,6 +1,8 @@
 #ifndef SENSORS_IMU_H_
 #define SENSORS_IMU_H_
 
+#include <sstream>
+
 #include "serial/serial.h"
 
 struct Angle {
@@ -12,7 +14,7 @@ struct Angle {
 class IMU {
  public:
   IMU() = default;
-  void ParseInfo(serial::Serial& serial);
+  std::stringstream ParseInfo(serial::Serial& serial);
 
  private:
   Angle angle_;

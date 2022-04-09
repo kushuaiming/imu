@@ -20,6 +20,7 @@ include_directories(
 
 set(SOURCES
   imu_node.cc
+  imu_publisher.cc
   sensors/imu.cc
 )
 

@@ -27,3 +27,10 @@ You can check device id by this command:
 ```C++
 ls /dev/ttyUSB*
 ```
+## 2.3 Get Infomation
+Ctrl + Alt + T: Open a new terminal.
+```Bash
+roscore
+rostopic list
+rostopic echo /imu
+```
