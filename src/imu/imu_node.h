@@ -8,6 +8,7 @@ class IMUNode {
  public:
   IMUNode(const std::string&, uint32_t baudrate);
   int Run();
+
  private:
   serial::Serial serial_;
   IMU imu_;

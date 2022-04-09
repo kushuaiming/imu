@@ -11,6 +11,7 @@ struct Angle {
 
 class IMU {
  public:
+  IMU() = default;
   void ParseInfo(serial::Serial& serial);
 
  private:

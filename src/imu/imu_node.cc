@@ -1,7 +1,8 @@
+#include "imu_node.h"
+
 #include <iostream>
 #include <string>
 
-#include "imu_node.h"
 #include "ros/ros.h"
 
 IMUNode::IMUNode(const std::string &port, uint32_t baudrate)
